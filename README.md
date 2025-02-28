@@ -5,7 +5,7 @@
 ---
 
 ## Repository Structure  
-This repository contains configuration files and reference materials for RSV analysis using **V-pipe**.
+This repository contains configuration files and reference materials for RSV wastewater data analysis using **V-pipe**.
 
 ### Workflow Configuration Files  
 - **Path:** `workflow/configuration/`  
@@ -24,10 +24,10 @@ Reference genomes used for RSV analysis:
 
 ### RSV Data Analysis Scripts  
 - **General Analysis (Subtype Independent):** `workflow/shared/`  
-- **RSV-A Specific Analysis:** `workflow/shared/RSV_A_analysis/`  
-- **RSV-B Specific Analysis:** `workflow/shared/RSV_B_analysis/`  
+- **RSV-A Specific Analysis:** `utilities/shared/RSV_A_analysis/`  
+- **RSV-B Specific Analysis:** `utilities/shared/RSV_B_analysis/`  
 
-### Figures Published in the Preprint  
+### Figures Published in the preprint  
 - **File Location:** `preprint/plots/`
 
 ---
