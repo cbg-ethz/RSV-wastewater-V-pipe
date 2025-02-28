@@ -1,0 +1,14 @@
+name: rsv-wastewater
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python
+  - fuc
+  - biopython
+#  - PyVCF # doesn't install on mac M2 chip
+  - numpy
+  - pysam
+  - pandas
+  - matplotlib
+  - seaborn
