@@ -1,0 +1,6 @@
+RSV-A:
+  inserts_bedfile: references/primers/RSV-A/RSVA_inserts_400_V3.0_lifted_EPI_ISL_412866_EPI_ISL_1653999.bed
+  primers_bedfile: references/primers/RSV-A/RSVA_primers_400_V3.0_lifted_EPI_ISL_412866_EPI_ISL_1653999.bed
+RSV-B:
+  inserts_bedfile: references/primers/RSV-B/RSVB_inserts_400_V2.1_lifted_EPI_ISL_412866_EPI_ISL_1653999.bed
+  primers_bedfile: references/primers/RSV-B/RSVB_primers_400_V2.1_lifted_EPI_ISL_412866_EPI_ISL_1653999.bed

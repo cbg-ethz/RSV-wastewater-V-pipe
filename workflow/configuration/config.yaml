@@ -1,0 +1,39 @@
+general:
+    virus_base_config: ""
+    preprocessor: "prinseq"
+    aligner: "bwa"
+    snv_caller: "lofreq"
+    primers_trimmer: "samtools"
+    threads: 10
+input:
+    datadir: "samples/"
+    samples_file: "samples.tsv"
+    read_length: 251
+    protocols_file: "references/primers.yaml"
+    reference: "references/concat_EPI_ISL_412866_EPI_ISL_1653999.fasta"
+    primers_trim_cutoff: 200
+output:
+    datadir: "results"
+    trim_primers: true
+    snv: true
+    local: false
+    global: false
+    QA: false
+    diversity: false
+    dehumanized_raw_reads: true
+gunzip:
+    mem: 100000
+sam2bam:
+    mem: 5000
+ref_bwa_index:
+    mem: 65536
+snv:
+    consensus: false
+    time: 240
+    mem: 1024
+    threads: 64
+lofreq:
+    consensus: false
+dehuman:
+    ref_host: "/cluster/project/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/BWAIndex/genome.fa"
+
