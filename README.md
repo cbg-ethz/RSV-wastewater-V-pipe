@@ -23,7 +23,7 @@ Reference genomes used for RSV analysis:
 - **RSV-B:** `workflow/references/primers/RSV-B/`  
 
 ### RSV Data Analysis Scripts  
-- **General Analysis (Subtype Independent):** `workflow/shared/`  
+- **General Analysis (Subtype Independent):** `utilities/shared/`  
 - **RSV-A Specific Analysis:** `utilities/shared/RSV_A_analysis/`  
 - **RSV-B Specific Analysis:** `utilities/shared/RSV_B_analysis/`  
 
