@@ -1,10 +1,10 @@
 import json
 import csv
 
-#Prepare binary dataframe: lineages x signature mutations
+#Prepare binary data matrix: lineages x signature mutations
 
-#json_file = "rsv_definitions/RSVB_nucleotide_mutations_0.9.json"
-json_file = "rsv_definitions/RSVA_nucleotide_mutations_0.9.json"
+#json_file = "RSVB_nucleotide_mutations_0.9.json"
+json_file = "RSVA_nucleotide_mutations_0.9.json"
 with open(json_file, "r") as file:
     clades_definitions = json.load(file)
 
@@ -26,8 +26,8 @@ for lineage, lineage_mutations in clades_definitions.items():
 
 
 # Specify the file name
-#filename = 'rsv_signatures/rsv_b_signatures.csv'
-filename = 'rsv_signatures/rsv_a_signatures.csv'
+#filename = 'rsv_b_signatures.csv'
+filename = 'rsv_a_signatures.csv'
 
 # Write to CSV
 with open(filename, mode='w', newline='') as file:
