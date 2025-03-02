@@ -55,17 +55,20 @@ def plot_by_location(df, location, filename):
 
     plt.gcf().subplots_adjust(bottom=0.2)  # Moves plot up to make space for x-axis label
 
+    time= pd.to_datetime(np.unique(df_filtered[['date']]))
+    plt.legend(title='Variants', bbox_to_anchor=(1.05, 1), loc='upper left',fontsize=20,title_fontsize=20)
     plt.xticks(rotation=45)
-    ax = plt.gca()  # Get the current Axes
-    ax.set_xticks(df_filtered['date'])
+
+    ax = plt.gca()
+    ax.tick_params(axis='y', labelsize=20)
+
+    ax.set_xticks(time)
     ax.set_xticklabels(
-        df_filtered['date'].dt.strftime("%Y.%b.%d"),  # Ensure 'date' is a datetime type
-        rotation=55,
+        (time).strftime("%Y.%b.%d"),
+        rotation=45,
         fontsize=20,
         ha='right')
     plt.tight_layout()
-
-    ax.tick_params(axis='y', labelsize=20)
 
     # Save the plot
     plt.savefig(filename)

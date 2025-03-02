@@ -52,21 +52,29 @@ def plot_by_location(df, location, filename):
         plt.fill_between(group_data['date'], group_data['proportionLower'], group_data['proportionUpper'], alpha=0.1,
                          color=variant_colors[variant])
 
+
     # Customize the plot
     plt.xlabel('Date',fontsize=20)
     plt.ylabel('Proportion',fontsize=20)
-    plt.title(f'2022-2023 {location}', fontsize=25)
+    plt.title(f'2022-2023 - {location}', fontsize=25)
     plt.legend(title='Variants', bbox_to_anchor=(1.05, 1), loc='upper left',fontsize=20,title_fontsize=20)
-    plt.tick_params(axis='both', which='major', labelsize=20)
+    #plt.tick_params(axis='both', which='major', labelsize=15)
 
-    ax = plt.gca()  # Get the current Axes
-    ax.set_xticks(df_filtered['date'])
+    plt.gcf().subplots_adjust(bottom=0.2)  # Moves plot up to make space for x-axis label
+
+    time= pd.to_datetime(np.unique(df_filtered[['date']]))
+    plt.legend(title='Variants', bbox_to_anchor=(1.05, 1), loc='upper left',fontsize=20,title_fontsize=20)
+    plt.xticks(rotation=45)
+
+    ax = plt.gca()
+    ax.tick_params(axis='y', labelsize=20)
+
+    ax.set_xticks(time)
     ax.set_xticklabels(
-        df_filtered['date'].dt.strftime("%Y.%b.%d"),
+        (time).strftime("%Y.%b.%d"),
         rotation=45,
         fontsize=20,
-        ha='right'
-    )
+        ha='right')
 
     plt.tight_layout()
 
@@ -152,8 +160,8 @@ def plot_stacked_are_chart(df, location, treatment_plant, filename, viral_loads)
         fontsize=20,
         ha='right')
 
-    plt.xlabel('Date',fontsize=25)
-    plt.ylabel('Flow-normalized viral load \n (gc/person/day)',fontsize=25)
+    plt.xlabel('Date',fontsize=20)
+    plt.ylabel('Flow-normalized viral load \n (gc/person/day)',fontsize=20)
     plt.title(f'2022-2023 {location}', fontsize=25)
     plt.legend(title='Variants', bbox_to_anchor=(1.05, 1), loc='upper left',fontsize=25,title_fontsize=25)
     #plt.ylim(0, 3.5e07)

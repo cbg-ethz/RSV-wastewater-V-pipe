@@ -8,7 +8,6 @@ import re
 df = pd.read_csv("../../preprint/data/coverage/collected_rsv_coverage_rsv_a_2023_2024_PREPRINT.tsv")
 print(np.unique(df['sample']))
 #print(df)
-# Calculate log coverage and replace -inf with 0
 # add one to avoid log of zero
 df['log_coverage'] = np.log10(df['coverage']+1)
 
