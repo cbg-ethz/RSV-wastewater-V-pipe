@@ -1,0 +1,14 @@
+name: downstream_analysis
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - python==3.11.11
+  - fuc==0.38.0
+  - biopython==1.84
+  - PyVCF==0.6.8 # doesn't install on mac M2 chip
+  - pandas==2.2.3
+  - pysam==0.22.1
+  - pyyaml==6.0.2
