@@ -4,18 +4,6 @@ https://github.com/LaraFuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/blob/acfb06c
 and here: https://github.com/rpetit3/vcf-annotator/blob/master/vcf-annotator.py
 """
 
-#In pyvcf the following change has been made:
-#quotechar='' has been changed to quotechar='"' . Otherwise it gives an error
-#class Writer(object):
-#    """VCF Writer. On Windows Python 2, open stream with 'wb'."""
-#
-#    # Reverse keys and values in header field count dictionary
-#    counts = dict((v,k) for k,v in field_counts.items())#
-#
-#    def __init__(self, stream, template, lineterminator="\n"):
-#        self.writer = csv.writer(stream, delimiter="\t",
-#                                 lineterminator=lineterminator,
-#                                 quotechar='', quoting=csv.QUOTE_NONE)) # <- changed code in this line
 
 from fuc import pyvcf
 import collections

@@ -5,10 +5,10 @@ channels:
   - defaults
 
 dependencies:
-  - python==3.11.11
+  - python==3.9.15
   - fuc==0.38.0
-  - biopython==1.84
+  - biopython==1.79
   - PyVCF==0.6.8 # doesn't install on mac M2 chip
-  - pandas==2.2.3
-  - pysam==0.22.1
+  - pandas==1.5.0
+  - pysam==0.19.1
   - pyyaml==6.0.2
