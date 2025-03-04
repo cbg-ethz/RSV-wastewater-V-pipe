@@ -1,6 +1,6 @@
 # Wastewater-Based Genomic Surveillance of Respiratory Syncytial Virus
 
-## Computational Analysis of Wastewater-Derived NGS Data (2022/2023 and 2023/2024 Seasons) of RSV (Subtypes A and B)
+## Wastewater-Based Genomic Surveillance of RSV: Computational Analysis (2022-2024)
 
 ---
 
@@ -26,6 +26,18 @@ Reference genomes used for RSV analysis:
 - **General Analysis (Subtype Independent):** `utilities/shared/`  
 - **RSV-A Specific Analysis:** `utilities/shared/RSV_A_analysis/`  
 - **RSV-B Specific Analysis:** `utilities/shared/RSV_B_analysis/`  
+
+### Conda environments
+- **Downstream Analysis** (`envs/downstream_analysis.yml`)
+- `annotate_vcf.py`
+- `extract_coverage_RSV_Vpipe.py`
+- `make_mutation_tsv.py`
+- `make_tallymut.py`
+- **Lineage deconvolution** (`envs/lollipop`)
+- **Data visualization** (`envs/data_viz`)
+- `coverage_plots.py`
+- `mutation_heatmap_aa.py`
+- `relative_abundances_rsva.py`, `relative_abundances_rsvb.py`
 
 ### Figures Published in the preprint  
 - **File Location:** `preprint/plots/`
