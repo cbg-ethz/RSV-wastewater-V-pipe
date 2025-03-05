@@ -33,8 +33,8 @@ Reference genomes used for RSV analysis:
 - `extract_coverage_RSV_Vpipe.py`
 - `make_mutation_tsv.py`
 - `make_tallymut.py`
-- **Lineage deconvolution** (`envs/lollipop`)
-- **Data visualization** (`envs/data_viz`)
+- **Lineage deconvolution** (`envs/lollipop.yml`)
+- **Data visualization** (`envs/data_viz.yml`)
 - `coverage_plots.py`
 - `mutation_heatmap_aa.py`
 - `relative_abundances_rsva.py`, `relative_abundances_rsvb.py`
@@ -52,4 +52,4 @@ This study explores the potential of wastewater-based genomic surveillance for *
 ## Citation  
 If you use this repository in your research, please cite:  
 **Wastewater-based sequencing of Respiratory Syncytial Virus enables tracking of lineages and identifying mutations at antigenic sites.**  
-Jolinda de Korne-Elenbaas, Auguste Rimaite, Ivan Topolsky, David Dreifuss, Charlyne Bürki, Lara Fuhrmann, Louis du Plessis, William J. Fitzsimmons, Emily E. Bendall, Tanja Stadler, Niko Beerenwinkel, Timothy R Julian; MedRxiv, 2025
+Jolinda de Korne-Elenbaas, Auguste Rimaite, Ivan Topolsky, David Dreifuss, Charlyne Bürki, Lara Fuhrmann, Louis du Plessis, William J. Fitzsimmons, Emily E. Bendall, Tanja Stadler, Niko Beerenwinkel, Timothy R Julian; MedRxiv, 2025, https://doi.org/10.1101/2025.02.28.25321637

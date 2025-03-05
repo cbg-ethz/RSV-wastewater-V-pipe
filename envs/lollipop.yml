@@ -1,7 +1,6 @@
 name: lollipop
 channels:
-  - pypi
   - conda-forge
+  - bioconda
 dependencies:
-  - python=3.13.0
   - lollipop=0.5.0
