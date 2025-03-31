@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import pysam
 import pandas as pd
@@ -6,6 +8,7 @@ import glob
 import argparse
 import re
 from collections import Counter
+import yaml
 """
 Prepare TSV file in the format which is needed for uploading data to GenSpectrum.
 Analyze annotated vcf files.
@@ -149,7 +152,7 @@ def process_multiple_coverage_files(input_directories, reference_genome):
     return coverage_out
 
 
-def main(path_to_vcf, timeline_tsv, path_to_coverage, reference):
+def main(path_to_vcf, timeline_tsv, path_to_coverage, reference,path_to_output,BATCH,VIR_STRING):
     if reference == "EPI_ISL_412866":
         subtype = "RSV-A"
     elif reference == "EPI_ISL_1653999":
@@ -294,22 +297,41 @@ def main(path_to_vcf, timeline_tsv, path_to_coverage, reference):
         AA_mut_freq_dict)
 
     tsv_samples_locations['lineageFrequencyEstimates'] = None
-
+######### Add the search for possible substrings ##########
     # Remove the subtype that is not the reference type
-    tsv_samples_locations = tsv_samples_locations[(tsv_samples_locations['reference']== subtype)
-                                                  | (tsv_samples_locations['reference']=='RSV A and B')
-                                                  | (tsv_samples_locations['reference']=='RSV subtype A and B')
-                                                  | (tsv_samples_locations['reference']=='sequencing of both RSV-A and B')
-                                                  | (tsv_samples_locations['reference']=='RSV-A and B')]
+    #tsv_samples_locations = tsv_samples_locations[(tsv_samples_locations['reference']== subtype)
+    #                                              | (tsv_samples_locations['reference']=='RSV A and B')
+    #                                              | (tsv_samples_locations['reference']=='RSV subtype A and B')
+    #                                              | (tsv_samples_locations['reference']=='sequencing of both RSV-A and B')
+    #                                              | (tsv_samples_locations['reference']=='RSV-A and B')]
+    
+    unique_refs=np.unique(tsv_samples_locations['reference'])
+    #print(unique_refs)
+    possible_vir_strings=VIR_STRING.split("|")
+    #print(possible_vir_strings)
+    # Find items in first_list that are NOT in second_list
+    not_in_second = [s for s in unique_refs if s not in possible_vir_strings]
+    if len(not_in_second) > 0:
+        print("WARNING: the following references is not is the provided refstring:", not_in_second)
+
+    tsv_samples_locations = tsv_samples_locations[tsv_samples_locations['reference'].apply(lambda x: (subtype in possible_vir_strings))]
+    ####
+
     tsv_samples_locations["reference"] = subtype
 
+    #tsv_samples_locations.to_csv(
+    #    f'timeline_mutation_{reference}_annotated_nonsyn.tsv', sep='\t',
+    #    index=False, quoting=3)
+###### adjusted output format #######
     tsv_samples_locations.to_csv(
-        f'timeline_mutation_{reference}_annotated_nonsyn.tsv', sep='\t',
-        index=False, quoting=3)
+    f'{path_to_output}{BATCH}_{reference}_Mutations_Dashboard.tsv', sep='\t',
+    index=False, quoting=3)
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Process VCF file and tsv files and prepare datamatrix')
+    parser.add_argument('--vpipe_dir', nargs='+', # added vpipe base dir as input 
+                        help='basedir to vpipe. e.g. /cluster/project/pangolin/rsv_pipeline/working')
     parser.add_argument('--path_to_vcf', nargs='+',
                         help='input directory containing VCF files')
     parser.add_argument('--timeline_tsv', help='path to timeline.tsv file')
@@ -317,9 +339,30 @@ if __name__ == '__main__':
                         help='input directory containing coverage tsv files')
     parser.add_argument('--reference',
                         help='reference: it should be e.g. (for RSV-A:) EPI_ISL_412866; (for RSV-B:) EPI_ISL_1653999')
-
-
-
+    parser.add_argument('--config',
+                        help='path to config file to read from') #added input of config file to read from
+    parser.add_argument('--virus_string',
+                        help='all possible accepted string for the specific virus') #added input of config file to read from
+    
     args = parser.parse_args()
 
-    main(args.path_to_vcf, args.timeline_tsv, args.path_to_coverage, args.reference)
+    # Read the YAML file
+    with open(args.config, 'r') as file:
+        configs = yaml.safe_load(file)  # Read and parse the YAML file  
+    
+    # in the samples .tsv file the BATCH is saved
+    # we want to get the batch name so that we can use it in the output file name
+    samples_tsv = configs['input']['samples_file']
+   
+    # Read the TSV file into a DataFrame
+    samples_tsv_df = pd.read_csv(samples_tsv, sep="\t")   
+
+    # Ensure the second column exists and calculate the max value
+    if len(dsamples_tsv_df.columns) > 1:
+        latest_batch = samples_tsv_df.iloc[:, 1].max()  # Access the second column using iloc, latest batch is accessed with max()
+    else:
+        print("The samples.tsv file does not have a second column to extract the latest batch.")
+
+    out_dir=f'{args.vpipe_dir[0]}/MutationFrequencies/'
+
+    main(args.path_to_vcf, args.timeline_tsv, args.path_to_coverage, args.reference, out_dir, latest_batch, args.virus_string)
