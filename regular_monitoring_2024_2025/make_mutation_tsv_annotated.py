@@ -27,6 +27,13 @@ def extract_codon_position(value):
     result = int(value)  # re.findall(r'\d+', value)
     return (result)  # return the first found number as an integer
 
+def is_vcf_empty(vcf_path):
+    with open(vcf_path, 'r') as file:
+        for line in file:
+            if not line.startswith('#'):
+                # Found a variant record
+                return False
+    return True
 
 # Processing vcf files
 
@@ -37,34 +44,38 @@ def load_convert(vcf_path, sample_name, reference):
     vcf_file = pysam.VariantFile(vcf_path)
     # record rows for df
     rows = []
+    ########## Add a check if vcf file is empty
 
     # iterate over the records (mutations) in the VCF file
     for record in vcf_file:
-        if record.chrom == reference:
-            # iterate over possible mutated positions
-            for alt in record.alts:
-                # Take allele frequences (AF) from INFO
-                af = record.info.get('AF')
+        if is_vcf_empty(record):
+            print("VCF is empty (only header present).")
+        else:
+            if record.chrom == reference:
+                # iterate over possible mutated positions
+                for alt in record.alts:
+                    # Take allele frequences (AF) from INFO
+                    af = record.info.get('AF')
 
-                CodonPosition = record.info.get('CodonPosition')
-                RefAminoAcid = record.info.get('RefAminoAcid')
-                AltAminoAcid = record.info.get('AltAminoAcid')
-                Gene = record.info.get('Gene')
-                # put results in rows
-                row = {
-                    'sample': sample_name,
-                    'pos': record.pos,
-                    'ref': record.ref,
-                    'alt': alt,
-                    'af': af,
-                    # 'CodonPosition': extract_codon_position(CodonPosition),
-                    'CodonPosition': CodonPosition,
-                    'RefAminoAcid': RefAminoAcid[0],
-                    'AltAminoAcid': AltAminoAcid[0],
-                    'Gene': Gene[0]
+                    CodonPosition = record.info.get('CodonPosition')
+                    RefAminoAcid = record.info.get('RefAminoAcid')
+                    AltAminoAcid = record.info.get('AltAminoAcid')
+                    Gene = record.info.get('Gene')
+                    # put results in rows
+                    row = {
+                        'sample': sample_name,
+                        'pos': record.pos,
+                        'ref': record.ref,
+                        'alt': alt,
+                        'af': af,
+                        # 'CodonPosition': extract_codon_position(CodonPosition),
+                        'CodonPosition': CodonPosition,
+                        'RefAminoAcid': RefAminoAcid[0],
+                        'AltAminoAcid': AltAminoAcid[0],
+                        'Gene': Gene[0]
 
-                }
-                rows.append(row)
+                    }
+                    rows.append(row)
     # close the VCF file
     vcf_file.close()
     # convert to dataframe, keys as column names
@@ -358,7 +369,7 @@ if __name__ == '__main__':
     samples_tsv_df = pd.read_csv(samples_tsv, sep="\t")   
 
     # Ensure the second column exists and calculate the max value
-    if len(dsamples_tsv_df.columns) > 1:
+    if len(samples_tsv_df.columns) > 1:
         latest_batch = samples_tsv_df.iloc[:, 1].max()  # Access the second column using iloc, latest batch is accessed with max()
     else:
         print("The samples.tsv file does not have a second column to extract the latest batch.")
