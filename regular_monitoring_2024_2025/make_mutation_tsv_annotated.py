@@ -40,45 +40,39 @@ def is_vcf_empty(vcf_path):
 # Iterate over multiple annotated VCF files and use the name of the directory containing each file as the sample name
 def load_convert(vcf_path, sample_name, reference):
     ''' function to load a single  annotated vcf and output a Pandas dataframe'''
-    ########## Add a check if vcf file is empty
-    # iterate over the records (mutations) in the VCF file
-    if is_vcf_empty(vcf_path):
-        #print("VCF is empty (only header present).")
-        return pd.DataFrame()  # Return empty DataFrame
-    else:
-        # Create a VariantFile object
-        vcf_file = pysam.VariantFile(vcf_path)
-        # record rows for df
-        rows = []
-        for record in vcf_file:
-            if record.chrom == reference:
-                # iterate over possible mutated positions
-                # Get INFO fields defined in the VCF header
-                for alt in record.alts:
-                    # Take allele frequences (AF) from INFO
-                    af = record.info.get('AF')#
-                    CodonPosition = record.info.get('CodonPosition')
-                    RefAminoAcid = record.info.get('RefAminoAcid')
-                    AltAminoAcid = record.info.get('AltAminoAcid')
-                    Gene = record.info.get('Gene')
-                    # put results in rows
-                    row = {
-                        'sample': sample_name,
-                        'pos': record.pos,
-                        'ref': record.ref,
-                        'alt': alt,
-                        'af': af,
-                        # 'CodonPosition': extract_codon_position(CodonPosition),
-                        'CodonPosition': CodonPosition,
-                        'RefAminoAcid': RefAminoAcid[0],
-                        'AltAminoAcid': AltAminoAcid[0],
-                        'Gene': Gene[0]#
-                    }
-                    rows.append(row)
-        # close the VCF file
-        vcf_file.close()
-        # convert to dataframe, keys as column names
-        df_out = pd.DataFrame(rows)#
+    # Create a VariantFile object
+    vcf_file = pysam.VariantFile(vcf_path)
+    # record rows for df
+    rows = []
+    for record in vcf_file:
+        if record.chrom == reference:
+            # iterate over possible mutated positions
+            # Get INFO fields defined in the VCF header
+            for alt in record.alts:
+                # Take allele frequences (AF) from INFO
+                af = record.info.get('AF')#
+                CodonPosition = record.info.get('CodonPosition')
+                RefAminoAcid = record.info.get('RefAminoAcid')
+                AltAminoAcid = record.info.get('AltAminoAcid')
+                Gene = record.info.get('Gene')
+                # put results in rows
+                row = {
+                    'sample': sample_name,
+                    'pos': record.pos,
+                    'ref': record.ref,
+                    'alt': alt,
+                    'af': af,
+                    # 'CodonPosition': extract_codon_position(CodonPosition),
+                    'CodonPosition': CodonPosition,
+                    'RefAminoAcid': RefAminoAcid[0],
+                    'AltAminoAcid': AltAminoAcid[0],
+                    'Gene': Gene[0]#
+                }
+                rows.append(row)
+    # close the VCF file
+    vcf_file.close()
+    # convert to dataframe, keys as column names
+    df_out = pd.DataFrame(rows)#
     return df_out
 
 
