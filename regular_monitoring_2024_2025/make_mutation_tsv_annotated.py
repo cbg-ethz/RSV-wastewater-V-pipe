@@ -40,23 +40,23 @@ def is_vcf_empty(vcf_path):
 # Iterate over multiple annotated VCF files and use the name of the directory containing each file as the sample name
 def load_convert(vcf_path, sample_name, reference):
     ''' function to load a single  annotated vcf and output a Pandas dataframe'''
-    # Create a VariantFile object
-    vcf_file = pysam.VariantFile(vcf_path)
-    # record rows for df
-    rows = []
     ########## Add a check if vcf file is empty
-
     # iterate over the records (mutations) in the VCF file
-    for record in vcf_file:
-        if is_vcf_empty(record):
-            print("VCF is empty (only header present).")
-        else:
+    if is_vcf_empty(vcf_path):
+        #print("VCF is empty (only header present).")
+        return pd.DataFrame()  # Return empty DataFrame
+    else:
+        # Create a VariantFile object
+        vcf_file = pysam.VariantFile(vcf_path)
+        # record rows for df
+        rows = []
+        for record in vcf_file:
             if record.chrom == reference:
                 # iterate over possible mutated positions
+                # Get INFO fields defined in the VCF header
                 for alt in record.alts:
                     # Take allele frequences (AF) from INFO
-                    af = record.info.get('AF')
-
+                    af = record.info.get('AF')#
                     CodonPosition = record.info.get('CodonPosition')
                     RefAminoAcid = record.info.get('RefAminoAcid')
                     AltAminoAcid = record.info.get('AltAminoAcid')
@@ -72,31 +72,28 @@ def load_convert(vcf_path, sample_name, reference):
                         'CodonPosition': CodonPosition,
                         'RefAminoAcid': RefAminoAcid[0],
                         'AltAminoAcid': AltAminoAcid[0],
-                        'Gene': Gene[0]
-
+                        'Gene': Gene[0]#
                     }
                     rows.append(row)
-    # close the VCF file
-    vcf_file.close()
-    # convert to dataframe, keys as column names
-    df_out = pd.DataFrame(rows)
-
+        # close the VCF file
+        vcf_file.close()
+        # convert to dataframe, keys as column names
+        df_out = pd.DataFrame(rows)#
     return df_out
 
 
 def process_multiple_vcfs(input_directories, reference):
     vcf_files_multiple = []
+    #print("Entering process_multiple_vcfs function")
     for input_dir in input_directories:
-
         # get list of VCF files in the input directory
         vcf_files = glob.glob(input_dir, recursive=True)
         vcf_files_multiple.extend(vcf_files)
-
+    
     # record rows for df
     rows = []
     # iterate over the VCF files from the list
     for vcf_file in vcf_files_multiple:
-
         # extract the sample name from the directory name
         sample_name = vcf_file.split('/')[-5]
         # load the VCF and convert to dataframe
@@ -153,7 +150,7 @@ def process_multiple_coverage_files(input_directories, reference_genome):
     for coverage_file in coverage_files_multiple:
         # extract the sample name from the directory name
         sample_name = coverage_file.split('/')[-4]
-        # print(sample_name)
+        
 
         df = extract_cov(coverage_file, sample_name, reference=reference_genome)
         # append the dataframe to the list of dataframes
@@ -227,24 +224,24 @@ def main(path_to_vcf, timeline_tsv, path_to_coverage, reference,path_to_output,B
 
     AA_mut_freq.reset_index(inplace=True)
     no_dupl_aa = []
-    print(AA_mut_freq.head())
+    #print(AA_mut_freq.head())
     aa_counts = Counter(AA_mut_freq["AA_mut"])
 
     seen = {}
     for aa in AA_mut_freq["AA_mut"]:
         if aa_counts[aa] > 1:
-            print(aa)
-            print(AA_mut_freq.loc[AA_mut_freq["AA_mut"]==aa])
+            #print(aa)
+            #print(AA_mut_freq.loc[AA_mut_freq["AA_mut"]==aa])
             count = seen.get(aa, 0) +1
             new_aa = aa + f"_{count}"
-            print(new_aa)
+            #print(new_aa)
             seen[aa] = count
         else:
             new_aa = aa
         no_dupl_aa.append(new_aa)
     AA_mut_freq["AA_mut"] = no_dupl_aa
 
-    print(AA_mut_freq.shape)
+    #print(AA_mut_freq.shape)
 
     mut_freq = AA_mut_freq.drop(columns="AA_mut")
     mut_freq.set_index("mut", inplace=True)
@@ -341,9 +338,9 @@ def main(path_to_vcf, timeline_tsv, path_to_coverage, reference,path_to_output,B
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Process VCF file and tsv files and prepare datamatrix')
-    parser.add_argument('--vpipe_dir', nargs='+', # added vpipe base dir as input 
+    parser.add_argument('--vpipe_dir',  # added vpipe base dir as input 
                         help='basedir to vpipe. e.g. /cluster/project/pangolin/rsv_pipeline/working')
-    parser.add_argument('--path_to_vcf', nargs='+',
+    parser.add_argument('--path_to_vcf', nargs='+', 
                         help='input directory containing VCF files')
     parser.add_argument('--timeline_tsv', help='path to timeline.tsv file')
     parser.add_argument('--path_to_coverage', nargs='+',
@@ -374,6 +371,6 @@ if __name__ == '__main__':
     else:
         print("The samples.tsv file does not have a second column to extract the latest batch.")
 
-    out_dir=f'{args.vpipe_dir[0]}/MutationFrequencies/'
+    out_dir=f'{args.vpipe_dir}/MutationFrequencies/'
 
     main(args.path_to_vcf, args.timeline_tsv, args.path_to_coverage, args.reference, out_dir, latest_batch, args.virus_string)

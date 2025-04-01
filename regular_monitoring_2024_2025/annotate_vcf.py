@@ -384,7 +384,7 @@ def main(input_dir, fname_genbank_file, chrom_name):
 
 
         fname_snv_temp = str(fname_snv_in).split('.vcf')[0]+'.temp.vcf'
-        print(fname_snv_temp)
+        #print(fname_snv_temp)
 
         update_vcf_chrom(fname_snv_in, fname_snv_temp, chrom_name)
 
