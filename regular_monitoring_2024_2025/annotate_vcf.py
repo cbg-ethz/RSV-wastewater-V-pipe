@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Code is copied/adapted from here:
 https://github.com/LaraFuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/blob/acfb06c0114e6bc6ae8510bdabaea754f9b4956b/workflow/scripts/annotate_vcf.py
@@ -382,7 +384,7 @@ def main(input_dir, fname_genbank_file, chrom_name):
 
 
         fname_snv_temp = str(fname_snv_in).split('.vcf')[0]+'.temp.vcf'
-        print(fname_snv_temp)
+        #print(fname_snv_temp)
 
         update_vcf_chrom(fname_snv_in, fname_snv_temp, chrom_name)
 
@@ -398,10 +400,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='annotate VCF files')
 
-    parser.add_argument("input_dir",
+    parser.add_argument("--input_dir",
                         help='path to input vcf file')
-    parser.add_argument("fname_genbank_file", help='genbank file')
-    parser.add_argument("chrom_name", help='reference name')
+    parser.add_argument("--fname_genbank_file", help='genbank file')
+    parser.add_argument("--chrom_name", help='reference name')
 
 
     args = parser.parse_args()
