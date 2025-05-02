@@ -1,0 +1,16 @@
+# Remove batch that was not the part of the regular monitoring (additional experiments)
+samples <- samples %>%
+  filter(!batch %in% c(
+                       "20241102_2411407626", # was not sequenced for any RSV subtype
+                       "20241108_2410565964",# was not sequenced for any RSV subtype
+                       "20241115_2405659474"))# was not sequenced for any RSV subtype
+
+# For the first 4 batches locations were selected to sequence for dominant subtype.
+# Starting with batch 5 - all samples are sequenced for both subtypes.
+samples[(samples$batch %in% c("20241122_2411645932") & samples$location %in% c("16")), "protocol"] <- "RSV-B"
+samples[(samples$batch %in% c("20241122_2411645932") & !samples$location %in% c("16")), "protocol"] <- "RSV-A"
+
+samples[(samples$batch %in% c("20241129_2414623138") & samples$location %in% c("16", "05")), "protocol"] <- "RSV-B"
+samples[(samples$batch %in% c("20241129_2414623138") & !samples$location %in% c("16", "05")), "protocol"] <- "RSV-A"
+
+# protocol naming for the other batches is correct.
