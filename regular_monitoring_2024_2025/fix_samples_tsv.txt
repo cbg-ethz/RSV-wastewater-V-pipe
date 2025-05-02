@@ -1,4 +1,4 @@
-# Remove batch that was not the part of the regular monitoring (additional experiments)
+# Remove batch that was not the part of the regular monitoring (additional experiments) -> 20250307_2418653583
 samples <- samples %>%
   filter(!batch %in% c(
                        "20241102_2411407626", # was not sequenced for any RSV subtype
