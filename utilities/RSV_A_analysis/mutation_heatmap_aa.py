@@ -127,12 +127,10 @@ colorbar2.ax.set_visible(False)
 for ytick in axs[0].get_yticklabels():
     label_text = ytick.get_text()
     if "GE" in label_text:
-        #ytick.set_color("green")
-        ytick.set_backgroundcolor("lightgreen")  # Background color
+        ytick.set_color("green")
 
     elif "ZH" in label_text:
-        #ytick.set_color("blue")
-        ytick.set_backgroundcolor("lightblue")  # Background color
+        ytick.set_color("blue")
 
 
 axs[0].set_facecolor("#ffe6e6")
@@ -233,10 +231,9 @@ axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -
 plt.suptitle("RSV-A, 2023-2024 season",
              fontsize=30, fontweight='bold', y=1.02)
 
-fig.savefig("../../preprint/plots/mutation_heatmap/timeline_tsv_mutation_sorted_RSVA_23_24_final.pdf",
+fig.savefig("../../preprint/plots/mutation_heatmap/timeline_tsv_mutation_sorted_RSVA_23_24_final_revisions.pdf",
             format="pdf",
             bbox_inches="tight")
-#pd.DataFrame(df_aa.columns).to_csv('../../preprint/plots/mutation_heatmap/mutations_observed_in_wastewater_rsva.csv', index=False, header=False)
 
 
 
@@ -281,12 +278,10 @@ colorbar2.ax.set_visible(False)
 for ytick in axs[0].get_yticklabels():
     label_text = ytick.get_text()
     if "GE" in label_text:
-        #ytick.set_color("green")
-        ytick.set_backgroundcolor("lightgreen")  # Background color
+        ytick.set_color("green")
 
     elif "ZH" in label_text:
-        #ytick.set_color("blue")
-        ytick.set_backgroundcolor("lightblue")  # Background color
+        ytick.set_color("blue")
 
 
 axs[0].set_facecolor("#ffe6e6")
@@ -375,6 +370,6 @@ axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -
 
 plt.suptitle("RSV-A, 2023-2024 season",
              fontsize=40, fontweight='bold', y=1.02)
-fig.savefig("../../preprint/plots/mutation_heatmap/F_gene_mutations_RSVA_23_24_final.pdf",
+fig.savefig("../../preprint/plots/mutation_heatmap/F_gene_mutations_RSVA_23_24_final_revisions.pdf",
             format="pdf", bbox_inches="tight")
 

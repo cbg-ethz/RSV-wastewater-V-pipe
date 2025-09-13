@@ -116,12 +116,10 @@ colorbar2.ax.set_visible(False)
 for ytick in axs[0].get_yticklabels():
     label_text = ytick.get_text()
     if "GE" in label_text:
-        #ytick.set_color("green")
-        ytick.set_backgroundcolor("lightgreen")  # Background color
+        ytick.set_color("green")
 
     elif "ZH" in label_text:
-        #ytick.set_color("blue")
-        ytick.set_backgroundcolor("lightblue")  # Background color
+        ytick.set_color("blue")
 
 
 axs[0].set_facecolor("#ffe6e6")
@@ -209,7 +207,7 @@ axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -
 plt.suptitle("RSV-B, 2022-2023 season",
              fontsize=30, fontweight='bold', y=1.02)
 
-fig.savefig("../../preprint/plots/mutation_heatmap/timeline_tsv_mutation_sorted_RSVB_22_23_final.pdf", format="pdf", bbox_inches="tight")
+fig.savefig("../../preprint/plots/mutation_heatmap/timeline_tsv_mutation_sorted_RSVB_22_23_final_revisions.pdf", format="pdf", bbox_inches="tight")
 
 # F-gene heatmap
 
@@ -247,12 +245,10 @@ sns.heatmap(mutations_df_F_gene, ax=axs[1], yticklabels=european_clades, linecol
 for ytick in axs[0].get_yticklabels():
     label_text = ytick.get_text()
     if "GE" in label_text:
-        #ytick.set_color("green")
-        ytick.set_backgroundcolor("lightgreen")  # Background color
+        ytick.set_color("green")
 
     elif "ZH" in label_text:
-        #ytick.set_color("blue")
-        ytick.set_backgroundcolor("lightblue")  # Background color
+        ytick.set_color("blue")
 
 
 axs[0].set_facecolor("#ffe6e6")
@@ -327,4 +323,4 @@ axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -
 
 plt.suptitle("RSV-B, 2022-2023 season",
              fontsize=40, fontweight='bold', y=1.02)
-fig.savefig("../../preprint/plots/mutation_heatmap/F_gene_mutations_RSVB_22_23_final.pdf", format="pdf", bbox_inches="tight")
+fig.savefig("../../preprint/plots/mutation_heatmap/F_gene_mutations_RSVB_22_23_final_revisions.pdf", format="pdf", bbox_inches="tight")
