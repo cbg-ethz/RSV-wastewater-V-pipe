@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import matplotlib.ticker as ticker
+import matplotlib.transforms as mtransforms
+
 
 df = pd.read_csv('../../preprint/data/lollipop/rsva/deconvolved.csv', sep='\t')
 viral_loads_2023_2024 = pd.read_csv("../../preprint/data/viral_load/normalized_viral_load/2023-11-01-2024-03-01WISE-dPCR.csv")
@@ -66,8 +68,26 @@ def plot_by_location(df, location, filename):
     ax.set_xticklabels(
         (time).strftime("%Y.%b.%d"),
         rotation=45,
-        fontsize=20,
+        fontsize=15,
         ha='right')
+
+# shifts labels so that they do not overlap
+    if location=="Geneva (GE)":
+        dx = 10
+
+        for i, label in enumerate(ax.get_xticklabels()):
+            if i in [3,7,9,10]:
+                offset = mtransforms.ScaledTranslation(dx / 72, 0, ax.figure.dpi_scale_trans)
+                label.set_transform(label.get_transform() + offset)
+    if location=="Zurich (ZH)":
+        dx = 5
+
+        for i, label in enumerate(ax.get_xticklabels()):
+            if i in [4]:
+                offset = mtransforms.ScaledTranslation(dx / 72, 0, ax.figure.dpi_scale_trans)
+                label.set_transform(label.get_transform() + offset)
+
+
     plt.tight_layout()
 
     # Save the plot
@@ -75,10 +95,10 @@ def plot_by_location(df, location, filename):
 
 
 # Plot for "Genève (GE)"
-plot_by_location(df, "Genève (GE)", "../../preprint/plots/relative_abundances/RSV_A/rsva_geneve_variants_over_time.pdf")
+plot_by_location(df, "Genève (GE)", "../../preprint/plots/relative_abundances/RSV_A/rsva_geneve_variants_over_time_revision.pdf")
 
 # Plot for "Zürich (ZH)"
-plot_by_location(df, "Zürich (ZH)", "../../preprint/plots/relative_abundances/RSV_A/rsva_zurich_variants_over_time.pdf")
+plot_by_location(df, "Zürich (ZH)", "../../preprint/plots/relative_abundances/RSV_A/rsva_zurich_variants_over_time_revision.pdf")
 
 def plot_stacked_area_chart(df, location, treatment_plant, filename, viral_loads):
 
@@ -152,7 +172,7 @@ def plot_stacked_area_chart(df, location, treatment_plant, filename, viral_loads
     ax.set_xticklabels(
         (time).strftime("%Y.%b.%d"),  # Ensure 'date' is a datetime type
         rotation=45,
-        fontsize=20,
+        fontsize=15,
         ha='right')
 
     plt.xlabel('Date',fontsize=20)
@@ -164,6 +184,22 @@ def plot_stacked_area_chart(df, location, treatment_plant, filename, viral_loads
     ax.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))  # Force scientific notation
     ax.tick_params(axis='y', labelsize=20)
 
+    # shifts labels so that they do not overlap
+    if location=="Geneva (GE)":
+        dx = 10
+
+        for i, label in enumerate(ax.get_xticklabels()):
+            if i in [3,7,9,10]:
+                offset = mtransforms.ScaledTranslation(dx / 72, 0, ax.figure.dpi_scale_trans)
+                label.set_transform(label.get_transform() + offset)
+    if location=="Zurich (ZH)":
+        dx = 5
+
+        for i, label in enumerate(ax.get_xticklabels()):
+            if i in [4]:
+                offset = mtransforms.ScaledTranslation(dx / 72, 0, ax.figure.dpi_scale_trans)
+                label.set_transform(label.get_transform() + offset)
+
     plt.tight_layout()
 
     plt.savefig(filename)
@@ -171,12 +207,12 @@ def plot_stacked_area_chart(df, location, treatment_plant, filename, viral_loads
 plot_stacked_area_chart(df=df,
                        location="Genève (GE)",
                        treatment_plant ="STEP Aire",
-                       filename="../../preprint/plots/relative_abundances/RSV_A/rsva_geneve_variants_over_time_stacked_area.pdf",
+                       filename="../../preprint/plots/relative_abundances/RSV_A/rsva_geneve_variants_over_time_stacked_area_revision.pdf",
                        viral_loads=viral_loads_2023_2024)
 
 plot_stacked_area_chart(df=df,
                        location="Zürich (ZH)",
                        treatment_plant ="ARA Werdhoelzli",
-                       filename="../../preprint/plots/relative_abundances/RSV_A/rsva_zurich_variants_over_time_stacked_area.pdf",
+                       filename="../../preprint/plots/relative_abundances/RSV_A/rsva_zurich_variants_over_time_stacked_area_revision.pdf",
                        viral_loads=viral_loads_2023_2024)
 
