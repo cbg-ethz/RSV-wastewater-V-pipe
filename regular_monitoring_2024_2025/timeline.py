@@ -33,7 +33,7 @@ def main(path_to_samples_tsv, path_to_output):
         sample_tsv = pd.read_csv(path_single_sample_tsv, sep='\t', header=None, engine='python')
         for index, row in sample_tsv.iterrows():
             submission_Id = row[0]
-            batch = path_single_sample_tsv.split('/')[-2]
+            batch = row[1]
             reads = row[2]
             reference = row[3]
             primerProtocol = f'Eawag-2024-{row[3]}'
