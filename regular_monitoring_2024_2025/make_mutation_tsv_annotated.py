@@ -16,7 +16,7 @@ Only non-synonymous substitutions are included.
 """
 
 THRESHOLD_VALUE = 0.02 # minimal frequency value
-RARE_MUTATION_LIMIT_DAYS = 2 # to be included in the heatmap mutation has to appear for at least RARE_MUTATION_LIMIT_DAYS days
+RARE_MUTATION_LIMIT_DAYS = 1 # to be included in the heatmap mutation has to appear for at least RARE_MUTATION_LIMIT_DAYS days
 COVERAGE_THRESHOLD = 30  # coverage depth below which mutation is treated as missing value
 
 

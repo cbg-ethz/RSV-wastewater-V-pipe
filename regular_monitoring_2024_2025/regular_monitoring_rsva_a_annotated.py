@@ -8,14 +8,25 @@ import requests
 import json
 import matplotlib.patches as mpatches
 
+"""Main function to parse arguments, process data, and generate plots."""
 
-with open('/Users/arimaite/Documents/GitHub/RSV_wastewater/utilities/shared/RSV_data_analysis/rsv_definitions/RSVA_nucleotide_mutations_0.9.json', 'r') as file:
+parser = argparse.ArgumentParser(description="Generate log coverage plots from a collected coverage TSV file.")
+parser.add_argument("-i", "--input_file", required=True, help="Path to the input TSV file (e.g., collected_rsv_coverage_...tsv)")
+parser.add_argument("-o", "--output_dir", required=True, help="Base output directory to save plots (e.g., /path/to/plots/)")
+parser.add_argument("--batch", required=True, help="Main batch identifier for output folder (e.g., 20250307_2418653583)")
+parser.add_argument("--subtype", required=True, help="Viral subtype (e.g., B)")
+
+args = parser.parse_args()
+
+
+
+with open('/cluster/project/pangolin/processes/rsv/rsv_downstream_analysis/RSV-wastewater-V-pipe/utilities/shared/RSV_data_analysis/rsv_definitions/RSVA_nucleotide_mutations_0.9.json', 'r') as file:
     clades_definitions = json.load(file)
 clades = clades_definitions.keys()
 
 swiss_clades = ["A.D.1", "A.D.1.5", "A.D.1.6", "A.D.2.1", "A.D.3", "A.D.3.1", "A.D.5.1", "A.D.5.2"]
 
-timeline_tsv_mutation = pd.read_csv('../../data/all_data/20250321_2429695737_regular_monitoring/20250321_2429695737_EPI_ISL_412866_Mutations_Dashboard.tsv',
+timeline_tsv_mutation = pd.read_csv(args.input_file ,
                                     sep='\t',
                                     usecols=['date',
                                              'location',
@@ -177,111 +188,7 @@ legend_patches = [mpatches.Patch(color=color, label=label) for label, color in c
 axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.2),
               ncol=4, fontsize=30, frameon=False, title="Genome Regions", title_fontsize=30)
 #plt.subplots_adjust(hspace=0.0)  # Adjust the space as needed
-plt.suptitle("Mutation frequencies (RSV-A, 2024-2025 season)",
+plt.suptitle("Mutation frequencies (RSV-A, 2025-2026 season)",
              fontsize=30, fontweight='bold', y=1.02)
 
-fig.savefig("../../plots/all_data/20250321_2429695737_regular_monitoring/nexus_20250321_2429695737_full_genome_rsva_nonsyn.pdf", format="pdf", bbox_inches="tight")
-
-print(df_aa)
-df_F_gene = df.loc[:, [col for col in df.columns if 5697 < int(re.findall(r'\d+', col)[0]) < 7421]]
-df_aa_F_gene = df_aa.loc[:, [col for col in df_aa.columns if col.split(":")[0]=="F"]]
-print(df_aa_F_gene)
-
-
-mutations_df_F_gene = pd.DataFrame(0, index=swiss_clades, columns=df_F_gene.columns)
-for clade in mutations_df_F_gene.index:
-    for mut in mutations_df_F_gene.columns:
-        mutations_df_F_gene.at[clade, mut] = 1 if mut in clades_definitions[clade] else 0
-
-sns.set_style("white")
-plt.grid(True, linewidth=0.1, color='gray')
-#sns.set(rc={'figure.figsize': (30, 20)})
-sns.set_style("white")
-plt.grid(True, linewidth=0.1, color='gray')
-
-
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 30), gridspec_kw={'height_ratios': [7, 1]})
-
-sns.heatmap(df_F_gene, ax=axs[0], yticklabels=df_F_gene.index.to_list(),linecolor="black", linewidths=0.0,
-            cmap=sns.color_palette("Blues", as_cmap=True),cbar_kws={"shrink": 0.5, "aspect": 10,"pad": 0.02,"label": "Frequency"})
-
-# Access the colorbar object
-colorbar = axs[0].collections[0].colorbar
-
-# Customize the tick labels and label font size
-colorbar.ax.tick_params(labelsize=25)  # Adjust tick label font size
-colorbar.set_label("Frequency", fontsize=35)  # Adjust the colorbar label size
-
-
-sns.heatmap(mutations_df_F_gene, ax=axs[1], yticklabels=swiss_clades, linecolor="black", linewidths=0.0,
-            cmap=sns.color_palette("Blues", as_cmap=True), cbar_kws={"shrink": 0.5, "aspect": 10,"pad": 0.02})
-# make colorbar not visible in the second plot
-colorbar2 = axs[1].collections[0].colorbar
-colorbar2.ax.set_visible(False)
-# Iterate over the X-axis ticks and color based on location
-for ytick in axs[0].get_yticklabels():
-    label_text = ytick.get_text()
-    #ytick.set_fontweight("bold")
-    if "Zurich" in label_text:
-        ytick.set_color("green")
-    elif "Lugano" in label_text:
-        ytick.set_color("purple")
-    elif "Laupen" in label_text:
-        ytick.set_color("cyan")
-    elif "Geneva" in label_text:
-        ytick.set_color("blue")
-    elif "Chur" in label_text:
-        ytick.set_color("red")
-    elif "Basel" in label_text:
-        ytick.set_color("orange")
-
-axs[0].set_facecolor("#ffe6e6")
-axs[0].set_xticks([x + 0.5 for x in range(df_F_gene.shape[1])])
-axs[0].set_xticklabels(df_aa_F_gene.transpose().index, fontsize=30, rotation=90, ha='center', va='top')
-axs[0].tick_params(axis='y', labelsize=15)
-
-plt.tight_layout()
-
-
-#plt.show()
-bold_regions = [
-    (5697, 7421, "F")  # F region
-]
-
-axs[1].set_xticks([x + 0.5 for x in range(df_F_gene.shape[1])])
-axs[1].set_xticklabels(df_F_gene.transpose().index, fontsize=30, rotation=90, ha='center', va='top')
-axs[1].set_facecolor("#ffe6e6")
-axs[1].tick_params(axis='y', labelsize=30, rotation=0)
-
-color_ranges = [
-    (5697, 7421, "darkcyan")
-]
-
-# Iterate over the X-axis ticks and assign colors based on ranges
-for index, xtick in enumerate(axs[1].get_xticklabels()):
-    pos_in_genome = int(re.findall(r'\d+', xtick.get_text())[0])  # Extract genome position
-    for start, end, color in color_ranges:
-        if start < pos_in_genome < end:
-            xtick.set_color(color)
-            xtick.set_fontweight("bold")
-            axs[0].get_xticklabels()[index].set_fontweight("bold")
-            break
-
-
-# Define the color-coded regions as a list of tuples
-color_regions = [
-    ("F (5697–7421)", "darkcyan")
-]
-
-# Create a list of mpatches.Patch objects for the legend
-legend_patches = [mpatches.Patch(color=color, label=label) for label, color in color_regions]
-
-# Add the legend to the plot (you can customize location and other properties)
-axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.4),
-              ncol=4, fontsize=40, frameon=False, title="Genome Regions",title_fontsize=40)
-#plt.subplots_adjust(hspace=0.0)  # Adjust the space as needed
-
-plt.suptitle("F-gene mutations frequencies (RSV-A, 2024-2025 season)",
-             fontsize=40, fontweight='bold', y=1.02)
-fig.savefig("../../plots/all_data/20250321_2429695737_regular_monitoring/nexus_20250321_2429695737_annotated_F_gene_rsva_nonsyn.pdf", format="pdf", bbox_inches="tight")
-
+fig.savefig(f"{args.output_dir}/{args.batch}_{args.subtype}.pdf", format="pdf", bbox_inches="tight")
