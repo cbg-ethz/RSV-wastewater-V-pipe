@@ -62,12 +62,12 @@ for clade in mutations_df.index:
         mutations_df.at[clade, mut] = 1 if mut in clades_definitions[clade] else 0
 
 
-sns.set(rc={'figure.figsize': (40, 20)})
+sns.set(rc={'figure.figsize': (80, 20)})
 sns.set_style("white")
 plt.grid(True, linewidth=0.1, color='gray')
 plt.suptitle("Mutation frequencies (RSV-B, 2022-2023 season)",
              fontsize=24, fontweight='bold', y=1.02)
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(40, 20), gridspec_kw={'height_ratios': [8, 1]})
+fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(80, 20), gridspec_kw={'height_ratios': [8, 1]})
 
 
 df = df.apply(pd.to_numeric)

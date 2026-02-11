@@ -80,13 +80,13 @@ sns.set_style("white")
 
 plt.grid(True, linewidth=0.1, color='gray')
 
-sns.set(rc={'figure.figsize': (40, 20)})
+sns.set(rc={'figure.figsize': (80, 20)})
 
 sns.set_style("white")
 
 plt.grid(True, linewidth=0.1, color='gray')
 
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(40, 20), gridspec_kw={'height_ratios': [8, 2]})
+fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(80, 20), gridspec_kw={'height_ratios': [8, 2]})
 df = df.apply(pd.to_numeric)
 
 sns.heatmap(df, ax=axs[0], yticklabels=df.index.to_list(),linecolor="black", linewidths=0.0,
