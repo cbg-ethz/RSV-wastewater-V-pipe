@@ -75,20 +75,14 @@ for clade in mutations_df.index:
     for mut in mutations_df.columns:
         mutations_df.at[clade, mut] = 1 if mut in clades_definitions[clade] else 0
 
-
+# The top panel heatmap
 sns.set_style("white")
-
 plt.grid(True, linewidth=0.1, color='gray')
-
-sns.set(rc={'figure.figsize': (80, 20)})
-
+sns.set(rc={'figure.figsize': (150, 20)})
 sns.set_style("white")
-
 plt.grid(True, linewidth=0.1, color='gray')
-
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(80, 20), gridspec_kw={'height_ratios': [8, 2]})
+fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(150, 20), gridspec_kw={'height_ratios': [15, 2]})
 df = df.apply(pd.to_numeric)
-
 sns.heatmap(df, ax=axs[0], yticklabels=df.index.to_list(),linecolor="black", linewidths=0.0,
             cmap=sns.color_palette("Blues", as_cmap=True),cbar_kws={"shrink": 0.5, "aspect": 10,"label": "Frequency","pad":0.01})
 
@@ -97,8 +91,8 @@ sns.heatmap(df, ax=axs[0], yticklabels=df.index.to_list(),linecolor="black", lin
 colorbar = axs[0].collections[0].colorbar
 
 # Customize the tick labels and label font size
-colorbar.ax.tick_params(labelsize=20)  # Adjust tick label font size
-colorbar.set_label("Frequency", fontsize=20)  # Adjust the colorbar label size
+colorbar.ax.tick_params(labelsize=15)  # Adjust tick label font size
+colorbar.set_label("Frequency", fontsize=15)  # Adjust the colorbar label size
 
 
 
@@ -139,10 +133,11 @@ bold_regions = [
     (5697, 7421, "F"),  # F region
 ]
 
+# The bottom panel heatmap
 axs[1].set_xticks([x + 0.5 for x in range(df.shape[1])])
 axs[1].set_xticklabels(df.transpose().index, fontsize=15, rotation=90, ha='center', va='top')
 axs[1].set_facecolor("#ffe6e6")
-axs[1].tick_params(axis='y', labelsize=32)
+axs[1].tick_params(axis='y', labelsize=15)
 color_ranges = [
     (70, 489, "red"),
     (599, 973, "khaki"),
@@ -189,6 +184,6 @@ axs[1].legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -
               ncol=4, fontsize=30, frameon=False, title="Genome Regions", title_fontsize=30)
 #plt.subplots_adjust(hspace=0.0)  # Adjust the space as needed
 plt.suptitle("Mutation frequencies (RSV-A, 2025-2026 season)",
-             fontsize=30, fontweight='bold', y=1.02)
+             fontsize=15, fontweight='bold', y=1.02)
 
 fig.savefig(f"{args.output_dir}/{args.batch}_{args.subtype}.pdf", format="pdf", bbox_inches="tight")
