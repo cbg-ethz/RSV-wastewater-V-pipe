@@ -52,4 +52,4 @@ This study explores the potential of wastewater-based genomic surveillance for *
 ## Citation  
 If you use this repository in your research, please cite:  
 **Wastewater-based sequencing of respiratory syncytial virus to investigate lineage dynamics and antigenic site mutations: a retrospective genomic epidemiology study**  
-Jolinda de Korne-Elenbaas, Auguste Rimaite, Ivan Topolsky, David Dreifuss, Charlyne Bürki, Lara Fuhrmann, Louis du Plessis, William J. Fitzsimmons, Emily E. Bendall, Tanja Stadler, Niko Beerenwinkel, Timothy R Julian; The Lancet Microbe, 2026, [doi:10.1016/j.lanmic.2026.101355](https://doi.org/10.1016/j.lanmic.2026.101355)
+Jolinda de Korne-Elenbaas, Auguste Rimaite, Ivan Topolsky, David Dreifuss, Charlyne Bürki, Lara Fuhrmann, Louis du Plessis, William J. Fitzsimmons, Emily E. Bendall, Tanja Stadler, Niko Beerenwinkel, Timothy R Julian; *The Lancet Microbe*, 2026, [doi:10.1016/j.lanmic.2026.101355](https://doi.org/10.1016/j.lanmic.2026.101355)
